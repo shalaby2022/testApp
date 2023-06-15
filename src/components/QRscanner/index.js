@@ -8,9 +8,7 @@ const QRscan = () => {
   const [on, setOn] = React.useState(RNCamera.Constants.FlashMode.off);
 
   const onSuccess = e => {
-    Linking.openURL(e.data).catch(err =>
-      console.error('An error occured', err),
-    );
+    Linking.openURL(e.data).catch(er => console.error('An error occured', er));
   };
 
   const activeQR = () => {};
