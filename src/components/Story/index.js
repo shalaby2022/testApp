@@ -1,4 +1,13 @@
-import {View, Text, TouchableOpacity, Alert, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Button,
+  Modal,
+  Pressable,
+  Image,
+} from 'react-native';
 import React, {useState} from 'react';
 import styles from './styles';
 import {StoryContainer} from 'react-native-stories-view';
@@ -12,6 +21,18 @@ const StoryComp = () => {
   const [enable, setEnable] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
   const [inpVal, setInpVal] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleReply = () => {
+    setEnable(false);
+    setModalVisible(true);
+  };
+
+  const handleSendReply = () => {
+    setModalVisible(!modalVisible);
+    setEnable(true);
+  };
+
   return (
     <View style={styles().container}>
       <Text>Story</Text>
@@ -19,37 +40,51 @@ const StoryComp = () => {
         <Text>Click</Text>
       </TouchableOpacity>
       {isClicked && (
-        <StoryContainer
-          visible={true}
-          enableProgress={enable}
-          images={images}
-          duration={60}
-          onComplete={() => setIsClicked(false)}
-          barStyle={{
-            barActiveColor: '#30a',
-            barInActiveColor: 'grey',
-            barHeight: 5,
-          }}
-          containerStyle={{
-            width: '100%',
-            height: '100%',
-          }}
-          footerComponent={
-            <View>
-              <TextInput
-                value={inpVal}
-                onChangeText={e => setInpVal(e)}
-                style={{
-                  borderWidth: 1,
-                  borderColor: 'red',
-                  width: '85%',
-                  alignSelf: 'center',
-                }}
-              />
+        <View style={{flex: 1}}>
+          <StoryContainer
+            visible={true}
+            enableProgress={enable}
+            images={images}
+            duration={60}
+            onComplete={() => setIsClicked(false)}
+            barStyle={{
+              barActiveColor: '#30a',
+              barInActiveColor: '#999',
+              barHeight: 5,
+            }}
+            containerStyle={{
+              width: '100%',
+              height: '100%',
+            }}
+          />
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              console.log('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={styles().centeredView}>
+              <View style={styles().modalView}>
+                <TextInput
+                  value={inpVal}
+                  onChangeText={e => setInpVal(e)}
+                  style={styles().textInputStyle}
+                />
+                <Pressable style={styles().button} onPress={handleSendReply}>
+                  <Image source={IMAGES.send} style={styles().sendImg} />
+                </Pressable>
+              </View>
             </View>
-          }
-          onReplyTextChange
-        />
+          </Modal>
+          {!modalVisible && (
+            <Pressable onPress={handleReply} style={styles().replyButton}>
+              <Text style={styles().replyText}>Reply</Text>
+            </Pressable>
+          )}
+        </View>
       )}
     </View>
   );

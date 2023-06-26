@@ -6,4 +6,5 @@ export const IMAGES = {
   dask: require('../assets/dask.jpeg'),
   dawn: require('../assets/dawn.jpeg'),
   nature: require('../assets/nature.jpeg'),
+  send: require('../assets/send.png'),
 };
