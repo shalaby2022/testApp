@@ -3,7 +3,6 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Button,
   Modal,
   Pressable,
   Image,
@@ -15,9 +14,20 @@ import {IMAGES} from '../../Constants/Images';
 
 const StoryComp = () => {
   const images = [
-    'https://i1.sndcdn.com/artworks-IrhmhgPltsdrwMu8-thZohQ-t500x500.jpg',
-    'https://sosugary.com/wp-content/uploads/2022/01/TheWeeknd_001.jpg',
+    {
+      uri: 'https://i1.sndcdn.com/artworks-IrhmhgPltsdrwMu8-thZohQ-t500x500.jpg',
+      type: 'image',
+    },
+    {
+      uri: 'https://sosugary.com/wp-content/uploads/2022/01/TheWeeknd_001.jpg',
+      type: 'image',
+    },
+    {
+      uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+      type: 'video',
+    },
   ];
+
   const [enable, setEnable] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
   const [inpVal, setInpVal] = useState();
@@ -35,27 +45,22 @@ const StoryComp = () => {
 
   return (
     <View style={styles().container}>
-      <Text>Story</Text>
-      <TouchableOpacity onPress={() => setIsClicked(true)}>
-        <Text>Click</Text>
+      <TouchableOpacity
+        onPress={() => setIsClicked(true)}
+        style={styles().showStory}>
+        <Text style={styles().showStoryText}>Show Story</Text>
       </TouchableOpacity>
       {isClicked && (
         <View style={{flex: 1}}>
           <StoryContainer
             visible={true}
             enableProgress={enable}
-            images={images}
+            images={images.map(item => item.uri)}
+            types={images.map(item => item.type)}
             duration={60}
             onComplete={() => setIsClicked(false)}
-            barStyle={{
-              barActiveColor: '#30a',
-              barInActiveColor: '#999',
-              barHeight: 5,
-            }}
-            containerStyle={{
-              width: '100%',
-              height: '100%',
-            }}
+            barStyle={styles().storyBarStyle}
+            containerStyle={styles().storyContainerStyle}
           />
 
           <Modal
@@ -70,6 +75,8 @@ const StoryComp = () => {
               <View style={styles().modalView}>
                 <TextInput
                   value={inpVal}
+                  placeholder="type something ..."
+                  placeholderTextColor={'#fff'}
                   onChangeText={e => setInpVal(e)}
                   style={styles().textInputStyle}
                 />

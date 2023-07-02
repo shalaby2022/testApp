@@ -28,8 +28,10 @@ const NativeStory = () => {
       finish: 0,
     },
     {
-      content: IMAGES.dawn,
-      type: 'image',
+      // content: IMAGES.dawn,
+      content:
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
+      type: 'video',
       finish: 0,
     },
     {
@@ -86,25 +88,27 @@ const NativeStory = () => {
   return (
     <View style={{flex: 1, backgroundColor: '#000'}}>
       {/* story images */}
-      <Image
-        source={content[current].content}
-        style={styles.storyStyle}
-        onLoadEnd={() => {
-          progress.setValue(0);
-          start();
-        }}
-      />
+      {content[current].type == 'image' ? (
+        <Image
+          source={content[current].content}
+          style={styles.storyStyle}
+          onLoadEnd={() => {
+            progress.setValue(0);
+            start();
+          }}
+        />
+      ) : null}
       {/* loading bars */}
       <View style={styles.loadingWrapper}>
         {content &&
           content.map((item, index) => (
             <View style={styles.loaderStyle} key={index}>
-              <Animated.View
+              <Animated.Image
                 style={{
                   flex: current == index ? progress : content[index].finish,
                   height: '100%',
                   backgroundColor: 'rgba(255,255,255,0.75)',
-                }}></Animated.View>
+                }}></Animated.Image>
             </View>
           ))}
       </View>

@@ -13,8 +13,9 @@ export default () =>
     modalView: {
       width: '100%',
       margin: 20,
-      backgroundColor: 'rgba(100,100,100, 0.3)',
-      borderRadius: 20,
+      backgroundColor: 'rgba(150,150,150, 0.2)',
+      borderBottomEndRadius: 35,
+      borderBottomStartRadius: 35,
       padding: 15,
       shadowColor: '#000',
       shadowOffset: {
@@ -71,5 +72,29 @@ export default () =>
       color: '#fff',
       fontSize: 16,
       fontWeight: '600',
+    },
+    showStory: {
+      width: '50%',
+      paddingHorizontal: 10,
+      paddingVertical: 15,
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'tomato',
+      borderRadius: 15,
+    },
+    showStoryText: {
+      fontWeight: '600',
+      color: '#fff',
+      fontSize: 17,
+    },
+    storyBarStyle: {
+      barActiveColor: '#30a',
+      barInActiveColor: '#999',
+      barHeight: 5,
+    },
+    storyContainerStyle: {
+      width: '100%',
+      height: '100%',
     },
   });

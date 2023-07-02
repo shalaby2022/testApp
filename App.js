@@ -4,6 +4,7 @@ import QRcodePage from './src/pages/QRcodePage';
 import QRscan from './src/components/QRscanner';
 import StoryComp from './src/components/Story';
 import NativeStory from './src/components/NativeStory';
+import InstaStoryComp from './src/components/InstaStory';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       {/* <QRscan /> */}
       <StoryComp />
       {/* <NativeStory /> */}
+      {/* <InstaStoryComp /> */}
     </SafeAreaView>
   );
 };
