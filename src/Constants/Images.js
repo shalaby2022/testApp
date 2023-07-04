@@ -7,4 +7,5 @@ export const IMAGES = {
   dawn: require('../assets/dawn.jpeg'),
   nature: require('../assets/nature.jpeg'),
   send: require('../assets/send.png'),
+  car: require('../assets/example.gif'),
 };

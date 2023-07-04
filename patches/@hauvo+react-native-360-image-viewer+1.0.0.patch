@@ -1,0 +1,36 @@
+diff --git a/node_modules/@hauvo/react-native-360-image-viewer/lib/index.js b/node_modules/@hauvo/react-native-360-image-viewer/lib/index.js
+index fc71e1c..1ccda36 100644
+--- a/node_modules/@hauvo/react-native-360-image-viewer/lib/index.js
++++ b/node_modules/@hauvo/react-native-360-image-viewer/lib/index.js
+@@ -71,12 +71,13 @@ export default class Image360Viewer extends Component {
+   }
+ 
+   render () {
+-    const { width, height } = this.props
++    const { width, height, resize } = this.props
+     return (
+       <View {...this.panResponder.panHandlers}>
+         <Image
+           source={this.getImage()}
+-          style={[styles.image, { width, height }]}
++          style={{ width, height }}
++          resizeMode={resize}
+         />
+       </View>
+     )
+diff --git a/node_modules/@hauvo/react-native-360-image-viewer/lib/styles.js b/node_modules/@hauvo/react-native-360-image-viewer/lib/styles.js
+index 50653e1..a2e8974 100644
+--- a/node_modules/@hauvo/react-native-360-image-viewer/lib/styles.js
++++ b/node_modules/@hauvo/react-native-360-image-viewer/lib/styles.js
+@@ -1,7 +1,7 @@
+ import { StyleSheet } from 'react-native'
+ 
+ export default StyleSheet.create({
+-  image: {
+-    resizeMode: 'cover'
+-  }
++  // image: {
++  //   resizeMode: 'cover'
++  // }
+ })
+\ No newline at end of file
