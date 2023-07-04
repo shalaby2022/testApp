@@ -97,4 +97,15 @@ export default () =>
       width: '100%',
       height: '100%',
     },
+    videoContainer: {
+      flex: 1,
+      backgroundColor: 'transparent',
+    },
+    backgroundVideo: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+    },
   });

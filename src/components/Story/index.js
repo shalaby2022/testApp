@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,11 +7,14 @@ import {
   Modal,
   Pressable,
   Image,
+  Dimensions,
 } from 'react-native';
-import React, {useState} from 'react';
 import styles from './styles';
 import {StoryContainer} from 'react-native-stories-view';
+import VideoPlayer from 'react-native-video-player';
 import {IMAGES} from '../../Constants/Images';
+
+const {width, height} = Dimensions.get('window');
 
 const StoryComp = () => {
   const images = [
@@ -43,13 +47,41 @@ const StoryComp = () => {
     setEnable(true);
   };
 
+  const handleClick = () => {
+    setIsClicked(true);
+  };
+
   return (
     <View style={styles().container}>
-      <TouchableOpacity
-        onPress={() => setIsClicked(true)}
-        style={styles().showStory}>
+      <TouchableOpacity onPress={handleClick} style={styles().showStory}>
         <Text style={styles().showStoryText}>Show Story</Text>
       </TouchableOpacity>
+
+      {/* <View style={styles().videoContainer}>
+        <VideoPlayer
+          video={{
+            uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+          }}
+          autoplay
+          disableSeek={true}
+          showDuration={true}
+          customStyles={{
+            video: {
+              width: width,
+              height: height,
+            },
+            thumbnail: {
+              width: width,
+              height: height,
+            },
+          }}
+          thumbnail={{
+            uri: 'https://www.rushbrush.com/media/2022/products/featsures/v2-pro/4.png',
+          }}
+          resizeMode={'stretch'}
+        />
+      </View> */}
+
       {isClicked && (
         <View style={{flex: 1}}>
           <StoryContainer
