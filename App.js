@@ -15,7 +15,7 @@ const App = () => {
       {/* <StoryComp /> */}
       {/* <NativeStory /> */}
       {/* <InstaStoryComp /> */}
-      <Image3D />
+      {/* <Image3D /> */}
     </SafeAreaView>
   );
 };
