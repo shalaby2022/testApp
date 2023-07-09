@@ -1,29 +1,23 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import QRcodePage from './src/pages/QRcodePage';
-import QRscan from './src/components/QRscanner';
-import StoryComp from './src/components/Story';
-import NativeStory from './src/components/NativeStory';
-import InstaStoryComp from './src/components/InstaStory';
-import Image3D from './src/components/Image3D';
+import {SafeAreaView} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import AuthStack from './src/navigations/Stack';
+import MyTabs from './src/navigations/Tab';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      {/* <QRcodePage /> */}
-      {/* <QRscan /> */}
-      {/* <StoryComp /> */}
-      {/* <NativeStory /> */}
-      {/* <InstaStoryComp /> */}
-      {/* <Image3D /> */}
+    <SafeAreaView style={{flex: 1}}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Auth" component={AuthStack} />
+          <Stack.Screen name="MyTabs" component={MyTabs} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;

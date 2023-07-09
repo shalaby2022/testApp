@@ -10,6 +10,8 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 
+import android.os.Bundle;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -18,6 +20,11 @@ public class MainApplication extends Application implements ReactApplication {
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
         }
+        
+        // @Override
+        // protected void onCreate(Bundle savedInstanceState) {
+        //   super.onCreate(null);
+        // }
 
         @Override
         protected List<ReactPackage> getPackages() {
