@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@hauvo/react-native-360-image-viewer": "^1.0.0",
+    "@react-native-async-storage/async-storage": "^1.19.0",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
@@ -22,6 +23,7 @@
     "react-native": "0.71.10",
     "react-native-camera": "^4.2.1",
     "react-native-insta-story": "^1.1.9",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-permissions": "^3.8.0",
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-qrcode-svg": "^6.2.0",

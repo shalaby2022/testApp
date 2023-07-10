@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -7,12 +7,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {isAuthorized} from '../SQLite/SQlite';
+import {IMAGES} from '../../Constants/Images';
 
 const Login = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <View style={styles().container}>
       <ImageBackground
-        source={require('../../assets/iris-10.jpg')}
+        source={IMAGES.iris10}
         resizeMode="cover"
         style={styles().image}
       />
@@ -21,26 +27,40 @@ const Login = ({navigation}) => {
           <Text style={styles().signText}>Login</Text>
         </View>
 
-        <View style={styles().inputsWrapper}>
-          <Text style={styles().infoHeader}>Email:</Text>
-          <TextInput style={styles().input} />
-        </View>
+        <KeyboardAwareScrollView enableAutomaticScroll={true} style={{flex: 1}}>
+          <View style={styles().inputsWrapper}>
+            <Text style={styles().infoHeader}>Email:</Text>
+            <TextInput
+              style={styles().input}
+              value={email}
+              onChangeText={e => setEmail(e)}
+            />
+          </View>
 
-        <View style={styles().inputsWrapper}>
-          <Text style={styles().infoHeader}>Password:</Text>
-          <TextInput style={styles().input} />
-        </View>
+          <View style={styles().inputsWrapper}>
+            <Text style={styles().infoHeader}>Password:</Text>
+            <TextInput
+              style={styles().input}
+              value={password}
+              onChangeText={e => setPassword(e)}
+            />
+          </View>
 
-        <TouchableOpacity style={styles().BtnWrapper}>
-          <Text style={styles().btnText}>Login</Text>
-        </TouchableOpacity>
-
-        <View style={styles().NoAccountText}>
-          <Text style={{fontSize: 12}}>Don't Have an account, </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={styles().registerBtnText}>Register</Text>
+          <TouchableOpacity
+            style={styles().BtnWrapper}
+            onPress={() => isAuthorized(email, navigation)}>
+            <Text style={styles().btnText}>Login</Text>
           </TouchableOpacity>
-        </View>
+
+          <View style={styles().NoAccountText}>
+            <Text style={{fontSize: 12, color: '#333'}}>
+              Don't Have an account,{' '}
+            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <Text style={styles().registerBtnText}>Register</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAwareScrollView>
       </View>
     </View>
   );
@@ -53,20 +73,18 @@ const styles = () =>
     container: {
       flex: 1,
       paddingBottom: 7,
-      backgroundColor: '#fff',
+      backgroundColor: '#eee',
     },
     image: {
-      height: 330,
+      height: 270,
       justifyContent: 'center',
     },
     wrapper: {
+      flex: 1,
       width: '100%',
-      height: '100%',
-      backgroundColor: '#eee',
+      backgroundColor: '#fff',
       borderTopRightRadius: 45,
       borderTopLeftRadius: 45,
-      position: 'absolute',
-      top: 250,
     },
     headerWrapper: {
       alignItems: 'center',
@@ -97,6 +115,7 @@ const styles = () =>
       width: '90%',
       alignSelf: 'center',
       paddingHorizontal: 10,
+      color: '#555',
     },
     BtnWrapper: {
       width: '40%',

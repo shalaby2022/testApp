@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
 import SQLite from 'react-native-sqlite-storage';
 
@@ -40,7 +41,7 @@ export const insertUserToDB = async (name, email, password, navigation) => {
           },
         );
       });
-      navigation?.navigate('SQLite');
+      navigation?.navigate('Tabs');
     } catch (er) {
       console.log(er.message);
     }
@@ -49,7 +50,6 @@ export const insertUserToDB = async (name, email, password, navigation) => {
 
 // update User record
 export const UpdateUserDB = async (name, email, id, navigation) => {
-  console.log(name, email, id);
   try {
     const db = await SQLite.openDatabase('Users.db');
     await db.transaction(async tx => {
@@ -63,7 +63,6 @@ export const UpdateUserDB = async (name, email, id, navigation) => {
           }
         },
         er => {
-          console.log(er.message);
           Alert.alert('Updating Failed');
         },
       );
@@ -136,12 +135,36 @@ export const getAllUsersFromDB = async setUsers => {
   }
 };
 
+// check if user is in users table
+export const isAuthorized = async (email, navigation) => {
+  try {
+    const db = await SQLite.openDatabase('Users.db');
+    await db.transaction(async tx => {
+      await tx.executeSql(
+        'SELECT * FROM Users where email=?',
+        [email],
+        async (tx, resultSet) => {
+          var length = resultSet.rows.length;
+          if (length > 0) {
+            navigation?.navigate('Tabs');
+            await AsyncStorage.setItem('isAuthed', 'true');
+          } else {
+            Alert.alert('Enter Valid Email & Password');
+          }
+        },
+      );
+    });
+  } catch (er) {
+    console.log(`Error ${er}`);
+  }
+};
+
 //**************** Products DATABASE   ****************//
 export const initalProductsDataBase = async () => {
   const db = await SQLite.openDatabase('Products.db');
   db.transaction(tx => {
     tx.executeSql(
-      `CREATE TABLE IF NOT EXISTS Products (id INTEGER PRIMARY KEY AUTOINCREMENT, color VARCHAR(20), name VARCHAR,price DECIMAL,sku VARCHAR)`,
+      `CREATE TABLE IF NOT EXISTS Products (id INTEGER PRIMARY KEY AUTOINCREMENT, color VARCHAR(20), name VARCHAR, price DECIMAL, sku VARCHAR, category VARCHAR)`,
       [],
       result => {
         console.log('Products Table Initalized successfully');
@@ -159,6 +182,7 @@ export const insertProductToDB = async (
   name,
   price,
   sku,
+  category,
   navigation,
 ) => {
   const db = await SQLite.openDatabase('Products.db');
@@ -166,6 +190,7 @@ export const insertProductToDB = async (
     color.length == 0 ||
     name.length == 0 ||
     price.length == 0 ||
+    category.length == 0 ||
     sku.length == 0
   ) {
     Alert.alert(`All fields are required!`);
@@ -173,8 +198,8 @@ export const insertProductToDB = async (
     try {
       await db.transaction(async tx => {
         await tx.executeSql(
-          'INSERT INTO Products (sku, name, color, price) VALUES (?, ?)',
-          [sku, name, color, price],
+          'INSERT INTO Products (sku, name, color, price, category) VALUES (?, ?, ?, ?,?)',
+          [sku, name, color, price, category],
           result => {
             Alert.alert('Product created successfully.');
           },
@@ -183,7 +208,7 @@ export const insertProductToDB = async (
           },
         );
       });
-      navigation?.navigate('SQLite');
+      navigation?.navigate('ProductsStack');
     } catch (er) {
       console.log(er);
     }
@@ -191,18 +216,28 @@ export const insertProductToDB = async (
 };
 
 // update product record
-export const UpdateProductDB = async (name, color, price, sku) => {
+export const UpdateProductDB = async (
+  color,
+  name,
+  price,
+  category,
+  sku,
+  navigation,
+) => {
   try {
     const db = await SQLite.openDatabase('Products.db');
     await db.transaction(tx => {
       tx.executeSql(
-        'UPDATE Users set name=?, color=?, price=?  where sku=?',
-        [name, color, price, sku],
+        'UPDATE Products set  color=?, name=?, price=?, category=?  where sku=?',
+        [color, name, price, category, sku],
         (tx, results) => {
           if (results.rowsAffected > 0) {
             Alert.alert('Product updated successfully');
+            navigation.goBack();
           }
-          Alert.alert('Updating Failed');
+        },
+        er => {
+          Alert.alert(`Updating Failed ${er.message}`);
         },
       );
     });
@@ -241,7 +276,6 @@ export const getProductFromDB = async setProcut => {
         var length = resultSet.rows.length;
         if (length > 0) {
           let product = resultSet.rows.item(0);
-          console.log({name, email});
           setProcut(product);
         }
       });
@@ -251,7 +285,7 @@ export const getProductFromDB = async setProcut => {
   }
 };
 
-// fetch All users
+// fetch All products
 export const getAllProductsFromDB = async setProducts => {
   try {
     const db = await SQLite.openDatabase('Products.db');
@@ -268,7 +302,6 @@ export const getAllProductsFromDB = async setProducts => {
       });
     });
   } catch (er) {
-    // console.log(er);
     console.log(`Error ${er.message}`);
   }
 };

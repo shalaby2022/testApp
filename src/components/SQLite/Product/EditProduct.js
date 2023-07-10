@@ -1,35 +1,49 @@
-import React, {useState} from 'react';
 import {
-  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
-import {insertUserToDB} from '../SQLite/SQlite';
-import {IMAGES} from '../../Constants/Images';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import React, {useEffect, useState} from 'react';
+import {UpdateProductDB} from '../SQlite';
 
-const Register = ({navigation}) => {
+const EditProduct = ({route, navigation}) => {
+  const [color, setColor] = useState('');
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const nav = navigation;
+  const [price, setPrice] = useState('');
+  const [sku, setSku] = useState('');
+  const [category, setCategory] = useState('');
+
+  useEffect(() => {
+    let params = route?.params?.product;
+    if (Object.keys(params).length > 0) {
+      setColor(params.color);
+      setName(params.name);
+      setPrice(params.price.toString());
+      setSku(params.sku);
+      setCategory(params.category);
+    }
+  }, []);
 
   return (
     <View style={styles().container}>
-      <ImageBackground
-        source={IMAGES.iris10}
-        resizeMode="cover"
-        style={styles().image}
-      />
       <View style={styles().wrapper}>
         <View style={styles().headerWrapper}>
-          <Text style={styles().signText}>Register</Text>
+          <Text style={styles().signText}>Edit Product</Text>
         </View>
 
-        <KeyboardAwareScrollView enableAutomaticScroll={true} style={{flex: 1}}>
+        <ScrollView style={{flex: 1}}>
+          <View style={styles().inputsWrapper}>
+            <Text style={styles().infoHeader}>Color:</Text>
+            <TextInput
+              style={styles().input}
+              value={color}
+              onChangeText={e => setColor(e)}
+            />
+          </View>
+
           <View style={styles().inputsWrapper}>
             <Text style={styles().infoHeader}>Name:</Text>
             <TextInput
@@ -40,62 +54,49 @@ const Register = ({navigation}) => {
           </View>
 
           <View style={styles().inputsWrapper}>
-            <Text style={styles().infoHeader}>Email:</Text>
+            <Text style={styles().infoHeader}>Price:</Text>
             <TextInput
               style={styles().input}
-              value={email}
-              onChangeText={e => setEmail(e)}
+              value={price}
+              onChangeText={e => setPrice(e)}
             />
           </View>
 
           <View style={styles().inputsWrapper}>
-            <Text style={styles().infoHeader}>Password:</Text>
+            <Text style={styles().infoHeader}>Category:</Text>
             <TextInput
               style={styles().input}
-              value={password}
-              onChangeText={e => setPassword(e)}
+              value={category}
+              onChangeText={e => setCategory(e)}
             />
           </View>
 
           <TouchableOpacity
             style={styles().BtnWrapper}
-            onPress={() => insertUserToDB(name, email, password, nav)}>
-            <Text style={styles().btnText}>Register</Text>
+            onPress={() =>
+              UpdateProductDB(color, name, price, category, sku, navigation)
+            }>
+            <Text style={styles().btnText}>Edit</Text>
           </TouchableOpacity>
-
-          <View style={styles().NoAccountText}>
-            <Text style={{fontSize: 12, color: '#333'}}>
-              Already Have an account,{' '}
-            </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={styles().registerBtnText}>Login</Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAwareScrollView>
+        </ScrollView>
       </View>
     </View>
   );
 };
 
-export default Register;
+export default EditProduct;
 
 const styles = () =>
   StyleSheet.create({
     container: {
       flex: 1,
       paddingBottom: 7,
-      backgroundColor: '#eee',
-    },
-    image: {
-      height: 270,
-      justifyContent: 'center',
+      backgroundColor: '#fff',
     },
     wrapper: {
       flex: 1,
       width: '100%',
-      backgroundColor: '#fff',
-      borderTopRightRadius: 45,
-      borderTopLeftRadius: 45,
+      backgroundColor: '#eee',
     },
     headerWrapper: {
       alignItems: 'center',

@@ -7,7 +7,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {UpdateUserDB} from './SQlite';
+import {UpdateUserDB} from '../SQlite';
+import {IMAGES} from '../../../Constants/Images';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const UserInfo = ({route, navigation}) => {
   const [name, setName] = useState('');
@@ -27,7 +29,7 @@ const UserInfo = ({route, navigation}) => {
   return (
     <View style={styles().container}>
       <ImageBackground
-        source={require('../../assets/iris-10.jpg')}
+        source={IMAGES.nature}
         resizeMode="cover"
         style={styles().image}
       />
@@ -36,29 +38,31 @@ const UserInfo = ({route, navigation}) => {
           <Text style={styles().signText}>Update</Text>
         </View>
 
-        <View style={styles().inputsWrapper}>
-          <Text style={styles().infoHeader}>Name:</Text>
-          <TextInput
-            style={styles().input}
-            value={name}
-            onChangeText={e => setName(e)}
-          />
-        </View>
+        <KeyboardAwareScrollView>
+          <View style={styles().inputsWrapper}>
+            <Text style={styles().infoHeader}>Name:</Text>
+            <TextInput
+              style={styles().input}
+              value={name}
+              onChangeText={e => setName(e)}
+            />
+          </View>
 
-        <View style={styles().inputsWrapper}>
-          <Text style={styles().infoHeader}>Email:</Text>
-          <TextInput
-            style={styles().input}
-            value={email}
-            onChangeText={e => setEmail(e)}
-          />
-        </View>
+          <View style={styles().inputsWrapper}>
+            <Text style={styles().infoHeader}>Email:</Text>
+            <TextInput
+              style={styles().input}
+              value={email}
+              onChangeText={e => setEmail(e)}
+            />
+          </View>
 
-        <TouchableOpacity
-          style={styles().BtnWrapper}
-          onPress={() => UpdateUserDB(name, email, id, nav)}>
-          <Text style={styles().btnText}>Update</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles().BtnWrapper}
+            onPress={() => UpdateUserDB(name, email, id, nav)}>
+            <Text style={styles().btnText}>Update</Text>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
       </View>
     </View>
   );
@@ -71,20 +75,18 @@ const styles = () =>
     container: {
       flex: 1,
       paddingBottom: 7,
-      backgroundColor: '#fff',
+      backgroundColor: '#eee',
     },
     image: {
-      height: 330,
+      height: 270,
       justifyContent: 'center',
     },
     wrapper: {
+      flex: 1,
       width: '100%',
-      height: '100%',
       backgroundColor: '#eee',
       borderTopRightRadius: 45,
       borderTopLeftRadius: 45,
-      position: 'absolute',
-      top: 250,
     },
     headerWrapper: {
       alignItems: 'center',
@@ -115,6 +117,7 @@ const styles = () =>
       width: '90%',
       alignSelf: 'center',
       paddingHorizontal: 10,
+      color: '#555',
     },
     BtnWrapper: {
       width: '40%',
