@@ -22,7 +22,7 @@ const SqlProducts = ({navigation}) => {
 
   const ShowIOSNotification = (title, body) => {
     PushNotificationIOS.addNotificationRequest({
-      id: 'channel-1',
+      id: 'channel',
       title,
       body,
     });
@@ -30,7 +30,7 @@ const SqlProducts = ({navigation}) => {
 
   const ShowAndroidNotification = (title, message) => {
     PushNotification.localNotification({
-      channelId: 'channel-1',
+      channelId: 'channel',
       title,
       message,
       largeIconUrl:

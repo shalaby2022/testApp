@@ -43,7 +43,7 @@ const RootNavigator = () => {
   useEffect(() => {
     PushNotification.createChannel(
       {
-        channelId: 'channel-1', // (required)
+        channelId: 'channel', // (required)
         channelName: 'My channel', // (required)
         channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
         playSound: false, // (optional) default: true
