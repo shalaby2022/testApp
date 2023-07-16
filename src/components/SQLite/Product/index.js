@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,6 +10,8 @@ import {
 } from 'react-native';
 import {deleteProductFromDB, getAllProductsFromDB} from '../SQlite';
 import {IMAGES} from '../../../Constants/Images';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PushNotification from 'react-native-push-notification';
 
 const SqlProducts = ({navigation}) => {
   const [products, setProducts] = useState([]);
@@ -17,13 +20,46 @@ const SqlProducts = ({navigation}) => {
     getAllProductsFromDB(setProducts);
   }, [products]);
 
+  const ShowIOSNotification = (title, body) => {
+    PushNotificationIOS.addNotificationRequest({
+      id: 'channel-1',
+      title,
+      body,
+    });
+  };
+
+  const ShowAndroidNotification = (title, message) => {
+    PushNotification.localNotification({
+      channelId: 'channel-1',
+      title,
+      message,
+      largeIconUrl:
+        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg',
+    });
+  };
+
   return (
     <View style={itemstyles().container}>
       <Text style={itemstyles().header}>Products</Text>
       <ScrollView style={{flex: 1}}>
         {products &&
           products.map(product => (
-            <View key={product.id} style={itemstyles().itemContainer}>
+            <TouchableOpacity
+              key={product.id}
+              style={itemstyles().itemContainer}
+              onPress={() =>
+                Platform.OS == 'ios'
+                  ? ShowIOSNotification(
+                      'testApp Notification',
+                      product.category,
+                    )
+                  : Platform.OS == 'android'
+                  ? ShowAndroidNotification(
+                      'testApp Notification',
+                      product.category,
+                    )
+                  : console.log('first')
+              }>
               <View>
                 <Text style={itemstyles().info}>Name: {product.name}</Text>
                 <Text style={itemstyles().info}>Price: {product.price}</Text>
@@ -55,7 +91,7 @@ const SqlProducts = ({navigation}) => {
                   <Image source={IMAGES.delete} style={itemstyles().img} />
                 </TouchableOpacity>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
       </ScrollView>
       <TouchableOpacity
